@@ -41,4 +41,4 @@ if err:=PlotGaussian(1.0,2.0); err!=nil{
 }
 ```
 
-
+![Gaussian](C:\Users\cvetk\Documents\gocode\matrix\plot\Gaussian.png)
