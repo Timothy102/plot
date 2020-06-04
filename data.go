@@ -277,7 +277,7 @@ func CovarianceMatrix(points []point) {
 		{varX, cov},
 		{cov, varY},
 	}
-	covMatrix, err := matrix.NewMatrix(slc, 2, 2)
+	covMatrix, err := matrix.NewMatrix(slc)
 	if err != nil {
 		log.Fatalf("could not create covariance matrix :%v", err)
 	}
