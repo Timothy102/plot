@@ -17,12 +17,6 @@ type point struct {
 	x, y float64
 }
 
-func main() {
-	if err := PlotTangents(math.Cos, -1.0, 1.0, 10); err != nil {
-		log.Fatalf("blabla :%v", err)
-	}
-}
-
 //PrintPoints prints points
 func PrintPoints(points []point) {
 	for i, p := range points {
