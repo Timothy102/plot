@@ -1,4 +1,4 @@
-//Package plot implements plotting functionality for all sorts of data as well as matrix and vector visualisations. It also provides statistical components of datasets, such as variances and covariances.
+//Package plot implements plotting functionality for all sorts of data as well as matrix and vector visualisations. It also provides statistical components of datasets along with Taylor series approximation of Cosine and the Exponential.
 package plot
 
 import (
