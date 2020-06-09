@@ -1,5 +1,5 @@
 # plot
-Go simple-to-use library for plotting data as well as statistical computations on datasets, such as variances and covariances.
+Go simple-to-use library for plotting data as well as statistical computations on datasets, such as variances and covariances and Taylor series approximation for Cosine and the Exponential.
 
 You can upload your own dataset to plot or use a dataset with the correspondant output. Including the sigmoid and gaussian distribution.
 
@@ -15,7 +15,7 @@ Let's take a look at some functionality!
 Let's look at a predefined dataset using the cosine function.
 The arguments -1.0 and 1.0 are defined as the starting and end point of iteration. Their values are due to the fact that cosine varies from -1 to 1. You can adjust the iterations parameter(which is set to 10000) to get a more dense distribution.
 ```
-points:=DefineDataset(math.Cos,10000,-1.0,1.0)
+points:=DefineDataset(math.Cos,-1.0,1.0,1000)
 if err:=PlotPoints("Graph.png",points);err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
