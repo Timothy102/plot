@@ -1,22 +1,24 @@
 # plot
-Go simple-to-use library for plotting data as well as statistical computations on datasets, such as variances and covariances and Taylor series approximation for Cosine and the Exponential.
+Go simple-to-use library for plotting data, including the Gaussian distribution and Taylor series approximation as well as statistical computations of datasets.
 
 You can upload your own dataset to plot or use a dataset with the correspondant output. Including the sigmoid and gaussian distribution.
 
-You can find the full documentation on GoDoc: godoc.org/timothy102/plot .
-
+[![GoDoc](https://godoc.org/github.com/Timothy102/plot?status.svg)](https://godoc.org/github.com/Timothy102/plot)
 
 The plot package is very easy to use, all the plotting is done for you with Gonum.
 Looking forward to get some feedback!
 
 Let's take a look at some functionality!
 
+  #Installation
+  ```
+  go get github.com/timothy102/plot
+  ```
 
-Let's look at a predefined dataset using the cosine function.
-The arguments -1.0 and 1.0 are defined as the starting and end point of iteration. Their values are due to the fact that cosine varies from -1 to 1. You can adjust the iterations parameter(which is set to 10000) to get a more dense distribution.
+Let's look at a dataset using the cosine function. Second and third argument to the function invoke the starting and end point of iteration. You can adjust the iterations parameter to get a more dense distribution.
 ```
 points:=DefineDataset(math.Cos,-1.0,1.0,1000)
-if err:=PlotPoints("Graph.png",points);err!=nil{
+if err:=PlotPoints(points,"Graph.png",false);err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
 ```
@@ -27,7 +29,7 @@ The rest is the same.
 ```
 points,err:=ReadFromDatafile(filepath)
 //error handling
-if err:=PlotPoints("Graph.png",points);err!=nil{
+if err:=PlotPoints(points,"Graph.png",false);err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
 ```
@@ -41,4 +43,3 @@ if err:=PlotGaussian(1.0,2.0); err!=nil{
 }
 ```
 
-![Gaussian](C:\Users\cvetk\Documents\gocode\matrix\plot\Gaussian.png)
