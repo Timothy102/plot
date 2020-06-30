@@ -41,8 +41,8 @@ Taylor series approximation for the Tan function and its error with the real dea
 The last argument indicates the polynomial degree to which the function approximates. 
 ```
 points := DefineDatasetWithPolynomial(TanEstimate, -2.0, 2.0, 250, 15)
-	e := EstimationError(math.Tan, points)
-	fmt.Printf("%.9f\n", e)
+e := EstimationError(math.Tan, points)
+fmt.Printf("%.9f\n", e)
 ```
 And the error is: 
 ```
@@ -58,4 +58,6 @@ if err:=PlotGaussian(1.0,2.0); err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
 ```
+
+<img src="github.com/timothy102/plot">
 
