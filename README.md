@@ -16,6 +16,8 @@ Let's take a look at some functionality!
   go get github.com/timothy102/plot
   ```
 
+
+  # Usage
 Let's look at a dataset using the cosine function. Second and third argument to the function invoke the starting and end point of iteration. You can adjust the iterations parameter to get a more dense distribution.
 ```
 points:=DefineDataset(math.Cos,-1.0,1.0,1000)
@@ -33,6 +35,19 @@ points,err:=ReadFromDatafile(filepath)
 if err:=PlotPoints(points,"Graph.png",false);err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
+```
+
+Taylor series approximation for the Tan function and its error with the real deal.
+The last argument indicates the polynomial degree to which the function approximates. 
+```
+points := DefineDatasetWithPolynomial(TanEstimate, -2.0, 2.0, 250, 15)
+	e := EstimationError(math.Tan, points)
+	fmt.Printf("%.9f\n", e)
+```
+And the error is: 
+```
+0.000000059
+
 ```
 
 
