@@ -1,5 +1,5 @@
 # plot
-Go simple-to-use library for plotting data, including the Gaussian distribution and Taylor series approximation as well as statistical computations of datasets.
+Go simple-to-use library for plotting data, including the Gaussian distribution and Taylor series approximation as well as statistical computations of datasets, vector and matrix visualizations and more.
 
 You can upload your own dataset to plot or use a dataset with the correspondant output. Including the sigmoid and gaussian distribution.
 
@@ -11,7 +11,7 @@ Looking forward to get some feedback!
 Let's take a look at some functionality!
 
 
-#Installation
+  # Installation
   ```
   go get github.com/timothy102/plot
   ```
