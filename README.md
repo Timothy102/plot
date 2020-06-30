@@ -12,8 +12,13 @@ Let's take a look at some functionality!
 
 
   # Installation
+  Pretty straightforward. 
   ```
   go get github.com/timothy102/plot
+  ```
+  Import the library in your Go file.
+  ```
+  import "github.com/timothy102/plot"
   ```
 
 
