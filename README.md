@@ -10,7 +10,8 @@ Looking forward to get some feedback!
 
 Let's take a look at some functionality!
 
-  #Installation
+
+#Installation
   ```
   go get github.com/timothy102/plot
   ```
