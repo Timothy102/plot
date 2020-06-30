@@ -59,5 +59,5 @@ if err:=PlotGaussian(1.0,2.0); err!=nil{
 }
 ```
 
-<img src="github.com/timothy102/plot">
+<img src="github.com/timothy102/plot/Gaussian.png">
 
