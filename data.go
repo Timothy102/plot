@@ -17,10 +17,6 @@ type point struct {
 	x, y float64
 }
 
-func main() {
-
-}
-
 //PrintPoints prints points
 func PrintPoints(points []point) {
 	for i, p := range points {
