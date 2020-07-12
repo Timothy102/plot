@@ -1,5 +1,5 @@
 # plot
-Go simple-to-use library for plotting and interpreting data, including the Gaussian distribution and Taylor series approximation as well as statistical computations of datasets, vector and matrix visualizations and more.
+Go simple-to-use library for plotting and interpreting data, including the Gaussian distribution and Taylor series approximations as well as statistical computations of datasets, vector and matrix visualizations and more.
 
 You can upload your own dataset to plot or use a dataset with the correspondant output. 
 
