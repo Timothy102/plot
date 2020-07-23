@@ -25,11 +25,10 @@ Let's take a look at some functionality!
   # Usage
 Let's look at a dataset using the cosine function. Second and third argument to the function invoke the starting and end point of iteration. You can adjust the iterations parameter to get a more dense distribution.
 ```go
-points:=DefineDataset(math.Cos,-1.0,1.0,1000)
-if err:=PlotPoints(points,"Graph.png",false);err!=nil{
-  log.Fatalf("could not plot data :%v",err)
-}
+points := plot.DefineDataset(math.Cos, -10.0, 10.0, 500)
+plot.PlotPoints(points, "Cosine.png", false)
 ```
+![alt text](Cosine.png)
 
 That is how simple it is. If you would like to import your dataset externally, use the ReadFromDatafile function.
 The rest is the same.
