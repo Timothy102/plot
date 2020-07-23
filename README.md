@@ -80,7 +80,8 @@ And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
 
 ```go
-PlotGaussian(1.0,2.0)
+PlotGaussian(4.2,1.2,1000)
 ```
+
 ![alt text](Gaussian.png)
 
