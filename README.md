@@ -65,6 +65,8 @@ fmt.Printf("%.7f", e)
 
 ```
 
+![alt text](SinusEstimate.png)  ![alt text](Sinus.png)
+
 And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
 
