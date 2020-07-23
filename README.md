@@ -53,7 +53,17 @@ And the error is:
 0.000000059
 
 ```
+```go
+points := plot.DefineDatasetWithPolynomial(plot.SinusEstimate, -5.0, 5.0, 250, 14)
+plot.PlotPoints(points, "SinusEstimate.png", false)
 
+p2 := plot.DefineDataset(math.Sin, -5.0, 5.0, 250)
+plot.PlotPoints(p2, "Sinus.png", false)
+	
+e := plot.ErrorBetweenPoints(points, p2)
+fmt.Printf("%.7f", e)
+
+```
 
 And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
