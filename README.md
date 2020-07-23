@@ -34,7 +34,7 @@ That is how simple it is. If you would like to import your dataset externally, u
 The rest is the same.
 
 ```go
-points,err:=ReadFromDatafile(filepath)
+points,err:=plot.ReadFromDatafile(filepath)
 //error handling
 if err:=PlotPoints(points,"Graph.png",false);err!=nil{
   log.Fatalf("could not plot data :%v",err)
@@ -44,7 +44,7 @@ if err:=PlotPoints(points,"Graph.png",false);err!=nil{
 Taylor series approximation for the Tan function and its error with the real deal.
 The last argument indicates the polynomial degree to which the function approximates. 
 ```go
-points := DefineDatasetWithPolynomial(TanEstimate, -2.0, 2.0, 250, 15)
+points := plot.DefineDatasetWithPolynomial(TanEstimate, -2.0, 2.0, 250, 15)
 e := EstimationError(math.Tan, points)
 fmt.Printf("%.9f\n", e)
 ```
@@ -68,10 +68,9 @@ fmt.Printf("%.7f", e)
 
 ```
 
-![alt text](SinusEstimate.png)![alt text](Sinus.png)
+![alt text](SinusEstimate.png) ![alt text](Sinus.png)
 
 With an average error of: 
-
 ```go
 0.0000085
 ```
