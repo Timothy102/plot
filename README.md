@@ -62,5 +62,5 @@ First parameter is the mean and second is the standard deviation of the dataset 
 ```go
 PlotGaussian(1.0,2.0)
 ```
-![alt text](https://github.com/timothy102/plot/Gaussian.png "Gaussian")
+!(https://github.com/timothy102/plot/Gaussian.png "Gaussian")
 
