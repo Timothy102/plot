@@ -5,7 +5,7 @@ You can upload your own dataset to plot or use a dataset with the correspondant 
 
 [![GoDoc](https://godoc.org/github.com/Timothy102/plot?status.svg)](https://godoc.org/github.com/Timothy102/plot)
 
-The plot package is very easy to use, all the plotting is done for you with Gonum.
+The plot package is easy to use and it offers a vast ammount of data methods.
 Looking forward to get some feedback!
 
 Let's take a look at some functionality!
