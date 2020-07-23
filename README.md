@@ -68,7 +68,7 @@ fmt.Printf("%.7f", e)
 
 ```
 
-![alt text](SinusEstimate.png)  ![alt text](Sinus.png)
+![alt text](SinusEstimate.png)![alt text](Sinus.png)
 
 With an average error of: 
 
