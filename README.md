@@ -49,6 +49,7 @@ e := EstimationError(math.Tan, points)
 fmt.Printf("%.9f\n", e)
 ```
 And the error is: 
+
 ```go
 0.000000059
 
