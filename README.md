@@ -60,9 +60,7 @@ And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
 
 ```go
-if err:=PlotGaussian(1.0,2.0); err!=nil{
-  log.Fatalf("could not plot data :%v",err)
-}
+PlotGaussian(1.0,2.0)
 ```
-
+![alt text](https://github.com/timothy102/plot/Gaussian.png "Gaussian")
 
