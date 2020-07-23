@@ -129,7 +129,7 @@ func PlotGaussian(mean, stddev float64, iterations int) error {
 		}
 		pts = append(pts, p)
 	}
-	if err := PlotPoints(pts, "Gaussian.png", true); err != nil {
+	if err := PlotPoints(pts, "Gaussian.png", false); err != nil {
 		return fmt.Errorf("could not plot the Gaussian :%v", err)
 	}
 	return nil
