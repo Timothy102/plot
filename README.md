@@ -1,11 +1,11 @@
 # plot
 Go simple-to-use library for plotting and interpreting data, including the Gaussian distribution and Taylor series approximations as well as statistical computations of datasets, vector and matrix visualizations and more.
 
-You can upload your own dataset to plot or use a dataset with the correspondant output. 
-
 [![GoDoc](https://godoc.org/github.com/Timothy102/plot?status.svg)](https://godoc.org/github.com/Timothy102/plot)
 
+
 The plot package is easy to use and it offers a vast ammount of data methods.
+You can upload your own dataset to plot or use a dataset with the correspondant output. 
 Looking forward to get some feedback!
 
 Let's take a look at some functionality!
@@ -77,8 +77,7 @@ With an average error of:
 ```
 
 And finally, the Gaussian distribution.
-First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
-
+First parameter is the mean value, the second is the standard deviation and the third is the number of iterations. Adjust these parameters for experimentation.
 ```go
 PlotGaussian(4.2,1.2,1000)
 ```
