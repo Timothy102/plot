@@ -53,6 +53,8 @@ And the error is:
 0.000000059
 
 ```
+
+Taylor series approximation of the 15th degree polynomial of Sine and the difference between Sine.
 ```go
 points := plot.DefineDatasetWithPolynomial(plot.SinusEstimate, -5.0, 5.0, 250, 14)
 plot.PlotPoints(points, "SinusEstimate.png", false)
@@ -66,6 +68,11 @@ fmt.Printf("%.7f", e)
 ```
 
 ![alt text](SinusEstimate.png)  ![alt text](Sinus.png)
+
+With an average error of: 
+``go
+0.0000085
+``
 
 And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
