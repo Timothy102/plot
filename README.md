@@ -1,4 +1,4 @@
-## plot
+# plot
 Go simple-to-use library for plotting and interpreting data, including the Gaussian distribution and Taylor series approximations as well as statistical computations of datasets, vector and matrix visualizations and more.
 
 You can upload your own dataset to plot or use a dataset with the correspondant output. 
@@ -58,11 +58,11 @@ And the error is:
 
 And finally, the Gaussian distribution.
 First parameter is the mean and second is the standard deviation of the dataset you would like to graph.
+
 ```go
 if err:=PlotGaussian(1.0,2.0); err!=nil{
   log.Fatalf("could not plot data :%v",err)
 }
 ```
 
-<img src="github.com/timothy102/plot/Gaussian.png">
 
