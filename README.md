@@ -82,7 +82,7 @@ pts := plot.DefineRandomPoints(1000, 0.0, 10.0)
 pts = plot.Normalize(pts)
 plot.PlotPoints(pts, "RandomPoints.png", true)
 ```
-![alt text](RandomPoints.png) ![alt text](Stdddev.png)
+![alt text](RandomPoints.png) ![alt text](Stddev.png)
 
 
 
