@@ -37,12 +37,21 @@ func RoundPointstoDecimals(pts Points, decimals int) []Point {
 	return pts
 }
 
-//Normalize normalizes Points to random values.
-func Normalize(pts Points) []Point {
+//Randomize randomizes points to random values.
+func Randomize(pts Points) []Point {
 	fls := randFloats(-5.0, 5.0, 2*len(pts))
 	for i := range pts {
 		pts[i].x = fls[i]
 		pts[i].y = fls[len(fls)-i]
+	}
+	return pts
+}
+
+//Normalize normalizes points so that they are centered and the standard deviation is 1.
+func Normalize(pts Points) Points {
+	for i := range pts {
+		pts[i].x = (pts[i].x - AverageX(pts)) / StddevX(pts)
+		pts[i].y = (pts[i].y - AverageY(pts)) / StddevY(pts)
 	}
 	return pts
 }
