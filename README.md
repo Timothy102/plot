@@ -75,6 +75,17 @@ With an average error of:
 0.0000085
 ```
 
+Let's take a look at creating a random dataset and then normalizing it so the data is centered and it has the standard deviation of 1
+The DefineRandomPoints creates a 1000 points between 0 and 10. 
+```go
+pts := plot.DefineRandomPoints(1000, 0.0, 10.0)
+pts = plot.Normalize(pts)
+plot.PlotPoints(pts, "RandomPoints.png", true)
+```
+![alt text](RandomPoints.png) ![alt text](Stdddev.png)
+
+
+
 And finally, the Gaussian distribution.
 First parameter is the mean value, the second is the standard deviation and the third is the number of iterations. Adjust these parameters for experimentation.
 ```go
