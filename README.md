@@ -28,7 +28,7 @@ Let's look at a dataset using the cosine function. Second and third argument to 
 points := plot.DefineDataset(math.Cos, -10.0, 10.0, 500)
 plot.PlotPoints(points, "Cosine.png", false)
 ```
-![alt text](Cosine.png)
+![alt text](images/Cosine.png)
 
 That is how simple it is. If you would like to import your dataset externally, use the ReadFromDatafile function.
 The rest is the same.
@@ -68,7 +68,7 @@ fmt.Printf("%.7f", e)
 
 ```
 
-![alt text](SinusEstimate.png) ![alt text](Sinus.png)
+![alt text](images/SinusEstimate.png) ![alt text](images/Sinus.png)
 
 With an average error of: 
 ```go
@@ -82,7 +82,7 @@ pts := plot.DefineRandomPoints(1000, 0.0, 10.0)
 pts = plot.Normalize(pts)
 plot.PlotPoints(pts, "RandomPoints.png", true)
 ```
-![alt text](RandomPoints.png) ![alt text](Stddev.png)
+![alt text](images/RandomPoints.png) ![alt text](images/Stddev.png)
 
 
 
@@ -92,5 +92,5 @@ First parameter is the mean value, the second is the standard deviation and the 
 PlotGaussian(4.2,1.2,1000)
 ```
 
-![alt text](Gaussian.png)
+![alt text](images/Gaussian.png)
 
