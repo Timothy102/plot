@@ -29,7 +29,7 @@ func PrintPoints(pts Points) {
 }
 
 //RoundPointstoDecimals rounds all Points to decimals accuracy.
-func RoundPointstoDecimals(pts Points, decimals int) []Point {
+func RoundPointstoDecimals(pts Points, decimals int) Points {
 	for _, p := range pts {
 		p.x = roundTo(p.x, decimals)
 		p.y = roundTo(p.y, decimals)
@@ -38,7 +38,7 @@ func RoundPointstoDecimals(pts Points, decimals int) []Point {
 }
 
 //Randomize randomizes points to random values.
-func Randomize(pts Points) []Point {
+func Randomize(pts Points) Points {
 	fls := randFloats(-5.0, 5.0, 2*len(pts))
 	for i := range pts {
 		pts[i].x = fls[i]
@@ -220,7 +220,7 @@ func AverageEuclidean(pts Points) float64 {
 }
 
 //FlipOverXAxis flips Points over the X axis.
-func FlipOverXAxis(pts Points) []Point {
+func FlipOverXAxis(pts Points) Points {
 	for i := range pts {
 		pts[i].x = -pts[i].x
 	}
@@ -228,7 +228,7 @@ func FlipOverXAxis(pts Points) []Point {
 }
 
 //FlipOverYAxis flips Points over the Y axis.
-func FlipOverYAxis(pts Points) []Point {
+func FlipOverYAxis(pts Points) Points {
 	for i := range pts {
 		pts[i].y = -pts[i].y
 	}
@@ -236,7 +236,7 @@ func FlipOverYAxis(pts Points) []Point {
 }
 
 //SortPointsByX bubble sorts Points, so the Point with the highest X value is the last element of the array.
-func SortPointsByX(pts Points) []Point {
+func SortPointsByX(pts Points) Points {
 	for i := len(pts); i > 0; i-- {
 		for j := 1; j < i; j++ {
 			if pts[j-1].x > pts[j].x {
@@ -248,7 +248,7 @@ func SortPointsByX(pts Points) []Point {
 }
 
 //SortPointsByY bubble sorts Points, so the Point with the highest Y value is the last element of the array.
-func SortPointsByY(pts Points) []Point {
+func SortPointsByY(pts Points) Points {
 	for i := len(pts); i > 0; i-- {
 		for j := 1; j < i; j++ {
 			if pts[j-1].y > pts[j].y {
@@ -260,7 +260,7 @@ func SortPointsByY(pts Points) []Point {
 }
 
 //DefineDataset returns  Points given the inputs. The function will iterate from stPoint to endPoint producing iterations number of Points.
-func DefineDataset(f func(x float64) float64, stPoint, endPoint float64, iterations int) []Point {
+func DefineDataset(f func(x float64) float64, stPoint, endPoint float64, iterations int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
@@ -274,7 +274,7 @@ func DefineDataset(f func(x float64) float64, stPoint, endPoint float64, iterati
 }
 
 //DefineDatasetWithPolynomial returns an array of Points given the inputs. The function will iterate from stPoint to endPoint with iterations.
-func DefineDatasetWithPolynomial(f func(x float64, polynomial int) float64, stPoint, endPoint float64, iterations, polynomial int) []Point {
+func DefineDatasetWithPolynomial(f func(x float64, polynomial int) float64, stPoint, endPoint float64, iterations, polynomial int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
@@ -288,7 +288,7 @@ func DefineDatasetWithPolynomial(f func(x float64, polynomial int) float64, stPo
 }
 
 //DefineDatasetToPower  is designed to plot Points to the power datasets.
-func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoint, endPoint float64, iterations int) []Point {
+func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoint, endPoint float64, iterations int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
@@ -302,7 +302,7 @@ func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoi
 }
 
 //DefineRandomPoints returns 'number' of Points between min and max
-func DefineRandomPoints(number int, min, max float64) []Point {
+func DefineRandomPoints(number int, min, max float64) Points {
 	var pts Points
 	for i := 0; i < number; i++ {
 		p := Point{
@@ -316,7 +316,7 @@ func DefineRandomPoints(number int, min, max float64) []Point {
 }
 
 //DefineWithRandomNoise generates a dataset based on a function and random noise
-func DefineWithRandomNoise(f func(x float64) float64, stPoint, endPoint float64, iterations int) []Point {
+func DefineWithRandomNoise(f func(x float64) float64, stPoint, endPoint float64, iterations int) Points {
 	rand.Seed(time.Now().UnixNano())
 	var noise float64
 	var pts Points
@@ -335,7 +335,7 @@ func DefineWithRandomNoise(f func(x float64) float64, stPoint, endPoint float64,
 }
 
 //DefineDatasetQuadratic defines a quadratic dataset
-func DefineDatasetQuadratic(f func(x, a, b, c float64) float64, a, b, c float64, stPoint, endPoint float64, iterations int) []Point {
+func DefineDatasetQuadratic(f func(x, a, b, c float64) float64, a, b, c float64, stPoint, endPoint float64, iterations int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
@@ -390,7 +390,7 @@ func Series(i Season, x float64) float64 {
 }
 
 //SeriesDataset returns Points from inputs and iterations.
-func SeriesDataset(s Season, iterations int) []Point {
+func SeriesDataset(s Season, iterations int) Points {
 	var pts Points
 	iter := (s.endPoint - s.stPoint) / float64(iterations)
 	for i := s.stPoint; i <= s.endPoint; i += iter {
@@ -428,7 +428,7 @@ func Gaussian(x float64, mean float64, stddev float64) float64 {
 }
 
 //ShiftDatasetOnX shifts the x coordinates by the scalar
-func ShiftDatasetOnX(pts Points, scalar float64) []Point {
+func ShiftDatasetOnX(pts Points, scalar float64) Points {
 	for i := range pts {
 		pts[i].x = pts[i].x + scalar
 	}
@@ -436,7 +436,7 @@ func ShiftDatasetOnX(pts Points, scalar float64) []Point {
 }
 
 //ShiftDatasetOnY shifts the y coordinates by the scalar
-func ShiftDatasetOnY(pts Points, scalar float64) []Point {
+func ShiftDatasetOnY(pts Points, scalar float64) Points {
 	for i := range pts {
 		pts[i].y = pts[i].y + scalar
 	}
@@ -444,7 +444,7 @@ func ShiftDatasetOnY(pts Points, scalar float64) []Point {
 }
 
 //StretchByFactorX streches the x coordinates by the factor. Check how mean and variance change.
-func StretchByFactorX(pts Points, factor float64) []Point {
+func StretchByFactorX(pts Points, factor float64) Points {
 	for i := range pts {
 		pts[i].x = pts[i].x * factor
 	}
@@ -452,7 +452,7 @@ func StretchByFactorX(pts Points, factor float64) []Point {
 }
 
 //StretchByFactorY streches the x coordinates by the factor. Check how mean and variance change.
-func StretchByFactorY(pts Points, factor float64) []Point {
+func StretchByFactorY(pts Points, factor float64) Points {
 	for i := range pts {
 		pts[i].y = pts[i].y * factor
 	}
@@ -460,7 +460,7 @@ func StretchByFactorY(pts Points, factor float64) []Point {
 }
 
 //ReadFromDatafile reads from the filepath and returns an array of Points.
-func ReadFromDatafile(filepath string) ([]Point, error) {
+func ReadFromDatafile(filepath string) (Points, error) {
 	f, err := os.Open(filepath)
 	if err != nil {
 		return nil, fmt.Errorf("could not open %s:%v", filepath, err)
@@ -513,8 +513,8 @@ func PointToXYs(pts Points) plotter.XYs {
 }
 
 //VectorToPoints is a helper function
-func VectorToPoints(vectors []matrix.Vector) []Point {
-	pts := make([]Point, len(vectors))
+func VectorToPoints(vectors []matrix.Vector) Points {
+	pts := make(Points, len(vectors))
 	for _, v := range vectors {
 		p := Point{
 			x: v.Slice()[0],
@@ -540,7 +540,7 @@ func checkIsNan(x float64) bool {
 }
 
 //DiscludeNan gets rid of every NaN dataPoint
-func DiscludeNan(pts Points) []Point {
+func DiscludeNan(pts Points) Points {
 	ps := make(Points, len(pts))
 	for _, p := range pts {
 		if !checkIsNan(p.x) && !checkIsNan(p.y) {
@@ -598,19 +598,19 @@ func OutOfRange(pts Points, index int) bool {
 }
 
 //RemoveFromPoints removes p from Points
-func RemoveFromPoints(pts Points, p Point) []Point {
+func RemoveFromPoints(pts Points, p Point) Points {
 	index := GetIndex(pts, p)
 	return append(pts[:index], pts[index+1:]...)
 }
 
 //RemovePointAt removes Point at index from Points.
-func RemovePointAt(pts Points, index int) []Point {
+func RemovePointAt(pts Points, index int) Points {
 	return append(pts[:index], pts[index+1:]...)
 
 }
 
 //ReverseIndexes flips the array indices
-func ReverseIndexes(pts Points) []Point {
+func ReverseIndexes(pts Points) Points {
 	for i := range pts {
 		pts[i] = pts[len(pts)-1-i]
 	}
@@ -618,7 +618,7 @@ func ReverseIndexes(pts Points) []Point {
 }
 
 //LimitTo limits Points to x and y limits
-func LimitTo(pts Points, xUpper, xDown, yUpper, yDown float64) []Point {
+func LimitTo(pts Points, xUpper, xDown, yUpper, yDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
 		if p.x > xUpper || p.x < xDown || p.y > yUpper || p.y < yDown {
@@ -629,7 +629,7 @@ func LimitTo(pts Points, xUpper, xDown, yUpper, yDown float64) []Point {
 }
 
 //LimitToXUpper limits Points to an upper X limit.
-func LimitToXUpper(pts Points, xUpper float64) []Point {
+func LimitToXUpper(pts Points, xUpper float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
 		if p.x > xUpper {
@@ -640,7 +640,7 @@ func LimitToXUpper(pts Points, xUpper float64) []Point {
 }
 
 //LimitToYUpper limits Points to an upper X limit.
-func LimitToYUpper(pts Points, yUpper float64) []Point {
+func LimitToYUpper(pts Points, yUpper float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
 		if p.y > yUpper {
@@ -651,7 +651,7 @@ func LimitToYUpper(pts Points, yUpper float64) []Point {
 }
 
 //LimitToXDown limits Points to an upper X limit.
-func LimitToXDown(pts Points, xDown float64) []Point {
+func LimitToXDown(pts Points, xDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
 		if p.x < xDown {
@@ -662,7 +662,7 @@ func LimitToXDown(pts Points, xDown float64) []Point {
 }
 
 //LimitToYDown limits Points to an upper X limit.
-func LimitToYDown(pts Points, yDown float64) []Point {
+func LimitToYDown(pts Points, yDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
 		if p.y < yDown {
@@ -786,7 +786,7 @@ func PointGradient(pts Points, k, n float64) (cost, dm, dc float64) {
 }
 
 //ErrorBetweenPoints returns the average error between est and real.
-func ErrorBetweenPoints(est, real []Point) float64 {
+func ErrorBetweenPoints(est, real Points) float64 {
 	var absError float64
 	if len(real) > len(est) {
 		real = RemoveFromIndexUpwards(real, len(est)-1)
@@ -800,7 +800,7 @@ func ErrorBetweenPoints(est, real []Point) float64 {
 }
 
 //BiggestIndividualError returns the highest error of individual Points.
-func BiggestIndividualError(est, real []Point) float64 {
+func BiggestIndividualError(est, real Points) float64 {
 	var absError float64
 	var arr []float64
 	if len(real) > len(est) {
@@ -826,7 +826,7 @@ func BiggestIndividualError(est, real []Point) float64 {
 }
 
 //SmallestIndividualError returns the smallest error of individual Points.
-func SmallestIndividualError(est, real []Point) float64 {
+func SmallestIndividualError(est, real Points) float64 {
 	var absError float64
 	var arr []float64
 	if len(real) > len(est) {
@@ -853,7 +853,7 @@ func SmallestIndividualError(est, real []Point) float64 {
 }
 
 //SamePoints  returns true if p1 dataset is the same as the p2 dataset.
-func SamePoints(p1, p2 []Point) bool {
+func SamePoints(p1, p2 Points) bool {
 	p1, p2 = FixDifferentPointSizes(p1, p2)
 	for i := range p1 {
 		if p1[i].x == p2[i].x && p1[i].y == p2[i].y {
@@ -910,7 +910,7 @@ func swapFloats(floats []float64, index int) {
 }
 
 //RemoveFromIndexUpwards removes all Points from index Points upwards from the array
-func RemoveFromIndexUpwards(pts Points, index int) []Point {
+func RemoveFromIndexUpwards(pts Points, index int) Points {
 	for i := range pts {
 		if index > i {
 			pts = RemoveFromPoints(pts, pts[i])
@@ -920,7 +920,7 @@ func RemoveFromIndexUpwards(pts Points, index int) []Point {
 }
 
 //RemoveFromIndexDownwards removes all Points from index Points downwards from the array
-func RemoveFromIndexDownwards(pts Points, index int) []Point {
+func RemoveFromIndexDownwards(pts Points, index int) Points {
 	for i := range pts {
 		if index < i {
 			pts = RemoveFromPoints(pts, pts[i])
@@ -930,7 +930,7 @@ func RemoveFromIndexDownwards(pts Points, index int) []Point {
 }
 
 //FixDifferentPointSizes equalizes Point sizes by shortening the longer one.
-func FixDifferentPointSizes(p1, p2 []Point) ([]Point, []Point) {
+func FixDifferentPointSizes(p1, p2 Points) (Points, Points) {
 	if len(p1) > len(p2) {
 		p1 = RemoveFromIndexUpwards(p1, len(p2)-1)
 	} else if len(p1) < len(p2) {
