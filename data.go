@@ -15,7 +15,8 @@ import (
 
 //Point struct
 type Point struct {
-	x, y float64
+	x, y   float64
+	isBlue bool
 }
 
 //Points is a slice of Points.
@@ -26,6 +27,11 @@ func PrintPoints(pts Points) {
 	for i, p := range pts {
 		fmt.Printf("%d : (%.2f, %.2f)\n", i+1, p.x, p.y)
 	}
+}
+
+//NewPoint returns a new point object.
+func NewPoint(x, y float64) Point {
+	return Point{x: x, y: y}
 }
 
 //RoundPointstoDecimals rounds all Points to decimals accuracy.
@@ -609,7 +615,7 @@ func RemovePointAt(pts Points, index int) Points {
 
 }
 
-//ReverseIndexes flips the array indices
+//ReverseIndexes flips the array indices.
 func ReverseIndexes(pts Points) Points {
 	for i := range pts {
 		pts[i] = pts[len(pts)-1-i]
@@ -983,4 +989,60 @@ func DoApproximation(pts Points, file string) error {
 		return fmt.Errorf("Drawing approximation failed. :%v", err)
 	}
 	return nil
+}
+
+//knn is the K-Nearest-Neighbour classification algorithm.
+//You can vary the parameter k for k nearest neighbours to be selected as an estimation.
+//This is binary algorithm set by points' isBlue attribute.
+func Knn(k int, p Point, pts []Point) bool {
+	var kValue float64
+	ps := TopKEuclideans(p, pts, k)
+	for _, pt := range ps {
+		var v float64
+		if !pt.isBlue {
+			v = -1
+		}
+		kValue += Euclidean(p, pt) * v
+	}
+	if kValue > 0 {
+		return true
+	}
+	return false
+}
+
+//Which Points have the shortest Euclidean distance to the Point p.
+//It is used with KNN Algorithm.
+func TopKEuclideans(p Point, pts []Point, k int) []Point {
+	var eucs []float64
+	var ps []Point
+	for _, pt := range pts {
+		euc := Euclidean(p, pt)
+		eucs = append(eucs, euc)
+		eucs = sort(eucs)
+		eucs = eucs[:k]
+	}
+	for i := range eucs {
+		for _, pt := range pts {
+			if eucs[i] == Euclidean(p, pt) {
+				ps = append(ps, pt)
+			}
+		}
+	}
+	return ps
+}
+
+func sort(fs []float64) []float64 {
+	for i := len(fs); i > 0; i-- {
+		for j := 1; j < i; j++ {
+			if fs[j-1] > fs[j] {
+				swapFs(fs, j)
+			}
+		}
+	}
+	return fs
+}
+func swapFs(ps []float64, index int) {
+	val := ps[index]
+	ps[index] = ps[index-1]
+	ps[index-1] = val
 }
