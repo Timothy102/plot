@@ -15,7 +15,7 @@ import (
 
 //Point struct
 type Point struct {
-	x, y float64
+	X, Y float64
 	is   bool
 }
 
@@ -25,36 +25,44 @@ type Points []Point
 //PrintPoints prints Points by line.
 func PrintPoints(pts Points) {
 	for i, p := range pts {
-		fmt.Printf("%d : (%.2f, %.2f)\n", i+1, p.x, p.y)
+		fmt.Printf("%d : (%.2f, %.2f)\n", i+1, p.X, p.Y)
 	}
 }
 
 //NewPoint returns a new point object.
 func NewPoint(x, y float64) Point {
-	return Point{x: x, y: y}
+	return Point{X: x, Y: y}
 }
 
-//X returns the x coordinate of the point
-func X(p Point) float64 {
-	return p.x
+//Xs returns all x coordinates of the dataset.
+func Xs(pts Points) []float64 {
+	arr := make([]float64, len(pts))
+	for _, p := range pts {
+		arr = append(arr, p.X)
+	}
+	return arr
 }
 
-//Y returns the y coordinate of the point
-func Y(p Point) float64 {
-	return p.y
+//Ys returns all y coordinates of the dataset.
+func Ys(pts Points) []float64 {
+	arr := make([]float64, len(pts))
+	for _, p := range pts {
+		arr = append(arr, p.Y)
+	}
+	return arr
 }
 
 //RandomPoint returns a random point
 func RandomPoint() Point {
 	rand.Seed(time.Now().UnixNano())
-	return Point{x: rand.Float64(), y: rand.Float64()}
+	return Point{X: rand.Float64(), Y: rand.Float64()}
 }
 
 //RoundPointstoDecimals rounds all Points to decimals accuracy.
 func RoundPointstoDecimals(pts Points, decimals int) Points {
 	for _, p := range pts {
-		p.x = roundTo(p.x, decimals)
-		p.y = roundTo(p.y, decimals)
+		p.X = roundTo(p.X, decimals)
+		p.Y = roundTo(p.Y, decimals)
 	}
 	return pts
 }
@@ -63,8 +71,8 @@ func RoundPointstoDecimals(pts Points, decimals int) Points {
 func Randomize(pts Points) Points {
 	fls := randFloats(-5.0, 5.0, 2*len(pts))
 	for i := range pts {
-		pts[i].x = fls[i]
-		pts[i].y = fls[len(fls)-i]
+		pts[i].X = fls[i]
+		pts[i].Y = fls[len(fls)-i]
 	}
 	return pts
 }
@@ -72,8 +80,8 @@ func Randomize(pts Points) Points {
 //Normalize normalizes points so that they are centered and the standard deviation is 1.
 func Normalize(pts Points) Points {
 	for i := range pts {
-		pts[i].x = (pts[i].x - AverageX(pts)) / StddevX(pts)
-		pts[i].y = (pts[i].y - AverageY(pts)) / StddevY(pts)
+		pts[i].X = (pts[i].X - AverageX(pts)) / StddevX(pts)
+		pts[i].Y = (pts[i].Y - AverageY(pts)) / StddevY(pts)
 	}
 	return pts
 }
@@ -98,7 +106,7 @@ func takeAverage(fs []float64) float64 {
 func xToArray(pts Points) []float64 {
 	arr := make([]float64, len(pts))
 	for _, p := range pts {
-		arr = append(arr, p.x)
+		arr = append(arr, p.X)
 	}
 	return arr
 }
@@ -106,7 +114,7 @@ func xToArray(pts Points) []float64 {
 func yToArray(pts Points) []float64 {
 	arr := make([]float64, len(pts))
 	for _, p := range pts {
-		arr = append(arr, p.y)
+		arr = append(arr, p.Y)
 	}
 	return arr
 }
@@ -170,7 +178,7 @@ func indexClosest(fls []float64) int {
 }
 func indexOfY(pts Points, y float64) int {
 	for i, p := range pts {
-		if p.y == y {
+		if p.Y == y {
 			return i
 		}
 	}
@@ -178,7 +186,7 @@ func indexOfY(pts Points, y float64) int {
 }
 func indexOfX(pts Points, x float64) int {
 	for i, p := range pts {
-		if p.x == x {
+		if p.X == x {
 			return i
 		}
 	}
@@ -189,7 +197,7 @@ func indexOfX(pts Points, x float64) int {
 func ClosestToZero(pts Points) float64 {
 	zero := 10.0
 	for _, f := range pts {
-		abs := Absolute(f.y)
+		abs := Absolute(f.Y)
 		if abs < zero {
 			zero = abs
 		}
@@ -207,7 +215,7 @@ func IndexAtClosestToZero(pts Points) int {
 func PointNearestValue(pts Points, value float64) Point {
 	nearest := 100.0
 	for i, p := range pts {
-		v := p.y - value
+		v := p.Y - value
 		v = Absolute(v)
 		if v < nearest {
 			nearest = v
@@ -225,8 +233,8 @@ func IndexAtClosestToValue(pts Points, value float64) int {
 
 //Euclidean returns the Euclidean distance between two Points.
 func Euclidean(p1, p2 Point) float64 {
-	s := math.Pow((p1.x - p2.x), 2)
-	k := math.Pow((p1.y - p2.y), 2)
+	s := math.Pow((p1.X - p2.X), 2)
+	k := math.Pow((p1.Y - p2.Y), 2)
 	return math.Sqrt(s + k)
 }
 
@@ -244,7 +252,7 @@ func AverageEuclidean(pts Points) float64 {
 //FlipOverXAxis flips Points over the X axis.
 func FlipOverXAxis(pts Points) Points {
 	for i := range pts {
-		pts[i].x = -pts[i].x
+		pts[i].X = -pts[i].X
 	}
 	return pts
 }
@@ -252,7 +260,7 @@ func FlipOverXAxis(pts Points) Points {
 //FlipOverYAxis flips Points over the Y axis.
 func FlipOverYAxis(pts Points) Points {
 	for i := range pts {
-		pts[i].y = -pts[i].y
+		pts[i].Y = -pts[i].Y
 	}
 	return pts
 }
@@ -261,7 +269,7 @@ func FlipOverYAxis(pts Points) Points {
 func SortPointsByX(pts Points) Points {
 	for i := len(pts); i > 0; i-- {
 		for j := 1; j < i; j++ {
-			if pts[j-1].x > pts[j].x {
+			if pts[j-1].X > pts[j].X {
 				swap(pts, j)
 			}
 		}
@@ -273,7 +281,7 @@ func SortPointsByX(pts Points) Points {
 func SortPointsByY(pts Points) Points {
 	for i := len(pts); i > 0; i-- {
 		for j := 1; j < i; j++ {
-			if pts[j-1].y > pts[j].y {
+			if pts[j-1].Y > pts[j].Y {
 				swap(pts, j)
 			}
 		}
@@ -287,8 +295,8 @@ func DefineDataset(f func(x float64) float64, stPoint, endPoint float64, iterati
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
 		p := Point{
-			x: i,
-			y: f(i),
+			X: i,
+			Y: f(i),
 		}
 		pts = append(pts, p)
 	}
@@ -301,8 +309,8 @@ func DefineDatasetWithPolynomial(f func(x float64, polynomial int) float64, stPo
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
 		p := Point{
-			x: i,
-			y: f(i, polynomial),
+			X: i,
+			Y: f(i, polynomial),
 		}
 		pts = append(pts, p)
 	}
@@ -315,8 +323,8 @@ func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoi
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
 		p := Point{
-			x: i,
-			y: f(i, n),
+			X: i,
+			Y: f(i, n),
 		}
 		pts = append(pts, p)
 	}
@@ -328,8 +336,8 @@ func DefineRandomPoints(number int, min, max float64) Points {
 	var pts Points
 	for i := 0; i < number; i++ {
 		p := Point{
-			x: min + rand.Float64()*(max-min),
-			y: min + rand.Float64()*(max-min),
+			X: min + rand.Float64()*(max-min),
+			Y: min + rand.Float64()*(max-min),
 		}
 		pts = append(pts, p)
 	}
@@ -346,8 +354,8 @@ func DefineWithRandomNoise(f func(x float64) float64, stPoint, endPoint float64,
 	for i := stPoint; i <= endPoint; i += iter {
 		noise = rand.Float64()
 		p := Point{
-			x: i,
-			y: f(i) * noise,
+			X: i,
+			Y: f(i) * noise,
 		}
 
 		//fmt.Printf("%.3f\n", noise)
@@ -362,8 +370,8 @@ func DefineDatasetQuadratic(f func(x, a, b, c float64) float64, a, b, c float64,
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
 		p := Point{
-			x: i,
-			y: f(i, a, b, c),
+			X: i,
+			Y: f(i, a, b, c),
 		}
 		pts = append(pts, p)
 	}
@@ -417,8 +425,8 @@ func SeriesDataset(s Season, iterations int) Points {
 	iter := (s.endPoint - s.stPoint) / float64(iterations)
 	for i := s.stPoint; i <= s.endPoint; i += iter {
 		p := Point{
-			x: i,
-			y: Series(s, i),
+			X: i,
+			Y: Series(s, i),
 		}
 		pts = append(pts, p)
 	}
@@ -452,7 +460,7 @@ func Gaussian(x float64, mean float64, stddev float64) float64 {
 //ShiftDatasetOnX shifts the x coordinates by the scalar
 func ShiftDatasetOnX(pts Points, scalar float64) Points {
 	for i := range pts {
-		pts[i].x = pts[i].x + scalar
+		pts[i].X = pts[i].X + scalar
 	}
 	return pts
 }
@@ -460,7 +468,7 @@ func ShiftDatasetOnX(pts Points, scalar float64) Points {
 //ShiftDatasetOnY shifts the y coordinates by the scalar
 func ShiftDatasetOnY(pts Points, scalar float64) Points {
 	for i := range pts {
-		pts[i].y = pts[i].y + scalar
+		pts[i].Y = pts[i].Y + scalar
 	}
 	return pts
 }
@@ -468,7 +476,7 @@ func ShiftDatasetOnY(pts Points, scalar float64) Points {
 //StretchByFactorX streches the x coordinates by the factor. Check how mean and variance change.
 func StretchByFactorX(pts Points, factor float64) Points {
 	for i := range pts {
-		pts[i].x = pts[i].x * factor
+		pts[i].X = pts[i].X * factor
 	}
 	return pts
 }
@@ -476,7 +484,7 @@ func StretchByFactorX(pts Points, factor float64) Points {
 //StretchByFactorY streches the x coordinates by the factor. Check how mean and variance change.
 func StretchByFactorY(pts Points, factor float64) Points {
 	for i := range pts {
-		pts[i].y = pts[i].y * factor
+		pts[i].Y = pts[i].Y * factor
 	}
 	return pts
 }
@@ -498,8 +506,8 @@ func ReadFromDatafile(filepath string) (Points, error) {
 			continue
 		}
 		p := Point{
-			x: x,
-			y: y,
+			X: x,
+			Y: y,
 		}
 		pts = append(pts, p)
 	}
@@ -516,8 +524,8 @@ func PointToVector(pts Points) []matrix.Vector {
 	for i := range pts {
 		slc := []float64{0.0, 0.0}
 		vec := matrix.NewVector(slc)
-		vec.Slice()[0] = pts[i].x
-		vec.Slice()[1] = pts[i].y
+		vec.Slice()[0] = pts[i].X
+		vec.Slice()[1] = pts[i].Y
 		vectors = append(vectors, vec)
 	}
 	return vectors
@@ -527,8 +535,8 @@ func PointToVector(pts Points) []matrix.Vector {
 func PointToXYs(pts Points) plotter.XYs {
 	xys := make(plotter.XYs, len(pts))
 	for i, p := range pts {
-		xys[i].X = p.x
-		xys[i].Y = p.y
+		xys[i].X = p.X
+		xys[i].Y = p.Y
 	}
 
 	return xys
@@ -539,8 +547,8 @@ func VectorToPoints(vectors []matrix.Vector) Points {
 	pts := make(Points, len(vectors))
 	for _, v := range vectors {
 		p := Point{
-			x: v.Slice()[0],
-			y: v.Slice()[1],
+			X: v.Slice()[0],
+			Y: v.Slice()[1],
 		}
 		pts = append(pts, p)
 	}
@@ -565,7 +573,7 @@ func checkIsNan(x float64) bool {
 func DiscludeNan(pts Points) Points {
 	ps := make(Points, len(pts))
 	for _, p := range pts {
-		if !checkIsNan(p.x) && !checkIsNan(p.y) {
+		if !checkIsNan(p.X) && !checkIsNan(p.Y) {
 			ps = append(ps, p)
 		} else {
 			log.Println("Discarding bad dataPoint. ")
@@ -580,7 +588,7 @@ func GetIndex(pts Points, p Point) (x int) {
 		log.Printf("Point not in dataset")
 	}
 	for i := range pts {
-		if pts[i].x == p.x && pts[i].y == p.y {
+		if pts[i].X == p.X && pts[i].Y == p.Y {
 			return i
 		}
 	}
@@ -600,7 +608,7 @@ func GetValueX(pts Points, index int) float64 {
 	if OutOfRange(pts, index) {
 		log.Printf("Point not in dataset")
 	}
-	return pts[index].x
+	return pts[index].X
 }
 
 //GetValueY returns the Y coordinate of Point at index.
@@ -608,7 +616,7 @@ func GetValueY(pts Points, index int) float64 {
 	if OutOfRange(pts, index) {
 		log.Printf("Point not in dataset")
 	}
-	return pts[index].y
+	return pts[index].Y
 }
 
 //OutOfRange returns true if index is out of range.
@@ -643,7 +651,7 @@ func ReverseIndexes(pts Points) Points {
 func LimitTo(pts Points, xUpper, xDown, yUpper, yDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
-		if p.x > xUpper || p.x < xDown || p.y > yUpper || p.y < yDown {
+		if p.X > xUpper || p.X < xDown || p.Y > yUpper || p.Y < yDown {
 			ps = RemoveFromPoints(ps, p)
 		}
 	}
@@ -654,7 +662,7 @@ func LimitTo(pts Points, xUpper, xDown, yUpper, yDown float64) Points {
 func LimitToXUpper(pts Points, xUpper float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
-		if p.x > xUpper {
+		if p.X > xUpper {
 			ps = RemoveFromPoints(ps, p)
 		}
 	}
@@ -665,7 +673,7 @@ func LimitToXUpper(pts Points, xUpper float64) Points {
 func LimitToYUpper(pts Points, yUpper float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
-		if p.y > yUpper {
+		if p.Y > yUpper {
 			ps = RemoveFromPoints(ps, p)
 		}
 	}
@@ -676,7 +684,7 @@ func LimitToYUpper(pts Points, yUpper float64) Points {
 func LimitToXDown(pts Points, xDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
-		if p.x < xDown {
+		if p.X < xDown {
 			ps = RemoveFromPoints(ps, p)
 		}
 	}
@@ -687,7 +695,7 @@ func LimitToXDown(pts Points, xDown float64) Points {
 func LimitToYDown(pts Points, yDown float64) Points {
 	ps := DiscludeNan(pts)
 	for _, p := range ps {
-		if p.y < yDown {
+		if p.Y < yDown {
 			ps = RemoveFromPoints(ps, p)
 		}
 	}
@@ -697,7 +705,7 @@ func LimitToYDown(pts Points, yDown float64) Points {
 //PointInDataset returns a bool if a Point belongs to the dataset
 func PointInDataset(pts Points, p Point) bool {
 	for _, pi := range pts {
-		if pi.x == p.x && pi.y == p.y {
+		if pi.X == p.X && pi.Y == p.Y {
 			return true
 		}
 	}
@@ -708,8 +716,8 @@ func PointInDataset(pts Points, p Point) bool {
 func FindMaxX(pts Points) float64 {
 	max := 0.5
 	for _, p := range pts {
-		if p.x > max {
-			max = p.x
+		if p.X > max {
+			max = p.X
 		}
 	}
 	return max
@@ -719,8 +727,8 @@ func FindMaxX(pts Points) float64 {
 func FindMaxY(pts Points) float64 {
 	max := 0.5
 	for _, p := range pts {
-		if p.y > max {
-			max = p.y
+		if p.Y > max {
+			max = p.Y
 		}
 	}
 	return max
@@ -730,8 +738,8 @@ func FindMaxY(pts Points) float64 {
 func FindMinX(pts Points) float64 {
 	min := 0.5
 	for _, p := range pts {
-		if p.x < min {
-			min = p.x
+		if p.X < min {
+			min = p.X
 		}
 	}
 	return min
@@ -741,8 +749,8 @@ func FindMinX(pts Points) float64 {
 func FindMinY(pts Points) float64 {
 	min := 0.5
 	for _, p := range pts {
-		if p.y < min {
-			min = p.y
+		if p.Y < min {
+			min = p.Y
 		}
 	}
 	return min
@@ -798,9 +806,9 @@ func ApproximateLine(pts Points, learningRate float64, iterations int) (k, n flo
 func PointGradient(pts Points, k, n float64) (cost, dm, dc float64) {
 	ps := DiscludeNan(pts)
 	for i := range ps {
-		dist := ps[i].y - (ps[i].x*k + n)
+		dist := ps[i].Y - (ps[i].X*k + n)
 		cost += dist * dist
-		dm += -ps[i].x * dist
+		dm += -ps[i].X * dist
 		dc += -dist
 	}
 	l := float64(len(ps))
@@ -816,7 +824,7 @@ func ErrorBetweenPoints(est, real Points) float64 {
 		est = RemoveFromIndexUpwards(est, len(real)-1)
 	}
 	for i := range real {
-		absError += real[i].y - est[i].y
+		absError += real[i].Y - est[i].Y
 	}
 	return absError / float64(len(real))
 }
@@ -831,7 +839,7 @@ func BiggestIndividualError(est, real Points) float64 {
 		est = RemoveFromIndexUpwards(est, len(real)-1)
 	}
 	for i := range real {
-		absError = real[i].y - est[i].y
+		absError = real[i].Y - est[i].Y
 		arr = append(arr, absError)
 	}
 	for i := len(arr); i > 0; i-- {
@@ -857,7 +865,7 @@ func SmallestIndividualError(est, real Points) float64 {
 		est = RemoveFromIndexUpwards(est, len(real)-1)
 	}
 	for i := range real {
-		absError = real[i].y - est[i].y
+		absError = real[i].Y - est[i].Y
 		arr = append(arr, absError)
 	}
 	for i := len(arr); i > 0; i-- {
@@ -878,7 +886,7 @@ func SmallestIndividualError(est, real Points) float64 {
 func SamePoints(p1, p2 Points) bool {
 	p1, p2 = FixDifferentPointSizes(p1, p2)
 	for i := range p1 {
-		if p1[i].x == p2[i].x && p1[i].y == p2[i].y {
+		if p1[i].X == p2[i].X && p1[i].Y == p2[i].Y {
 			return true
 		}
 	}
@@ -890,7 +898,7 @@ func EstimationError(f func(x float64) float64, pts Points) float64 {
 	var loss float64
 	var e float64
 	for _, p := range pts {
-		e = p.y - f(p.x)
+		e = p.Y - f(p.X)
 		loss += e
 	}
 	return loss / float64(len(pts))
@@ -901,7 +909,7 @@ func Mse(f func(x float64) float64, pts Points) float64 {
 	var loss float64
 	var e float64
 	for _, p := range pts {
-		e = math.Pow(p.y-f(p.x), 2)
+		e = math.Pow(p.Y-f(p.X), 2)
 		loss += e
 	}
 	return loss
@@ -917,7 +925,7 @@ func Rmse(f func(x float64) float64, pts Points) float64 {
 func CrossEntropy(f func(x float64) float64, pts Points) float64 {
 	var loss float64
 	for _, p := range pts {
-		loss += p.y*math.Log(f(p.x)) + (1-p.y)*math.Log(1-p.x)
+		loss += p.Y*math.Log(f(p.X)) + (1-p.Y)*math.Log(1-p.X)
 	}
 	if checkIsNan(loss) {
 		return 0
@@ -1067,7 +1075,7 @@ func swapFs(ps []float64, index int) {
 func AverageX(pts Points) float64 {
 	var sum float64
 	for _, p := range pts {
-		sum += p.x
+		sum += p.X
 	}
 	avg := sum / float64(len(pts))
 	return avg
@@ -1077,7 +1085,7 @@ func AverageX(pts Points) float64 {
 func AverageY(pts Points) float64 {
 	var sum float64
 	for _, p := range pts {
-		sum += p.y
+		sum += p.Y
 	}
 	avg := sum / float64(len(pts))
 	return avg
@@ -1088,7 +1096,7 @@ func VarianceX(pts Points) float64 {
 	var sum float64
 	avg := AverageX(pts)
 	for _, p := range pts {
-		sum += math.Pow(p.x-avg, 2)
+		sum += math.Pow(p.X-avg, 2)
 	}
 	return sum / float64(len(pts))
 }
@@ -1098,7 +1106,7 @@ func VarianceY(pts Points) float64 {
 	var sum float64
 	avg := AverageY(pts)
 	for _, p := range pts {
-		sum += math.Pow(p.y-avg, 2)
+		sum += math.Pow(p.Y-avg, 2)
 	}
 	return sum / float64(len(pts))
 }
@@ -1110,9 +1118,45 @@ func Covariance(pts Points) float64 {
 	avgY := AverageY(pts)
 
 	for _, p := range pts {
-		cov += (p.x - avgX) * (p.y - avgY)
+		cov += (p.X - avgX) * (p.Y - avgY)
 	}
 	return cov / float64(len(pts))
+}
+
+//MedianX returns the median x value of the dataset.
+func MedianX(pts Points) float64 {
+	if len(pts)%2 != 0 {
+		return pts[len(pts)/2-1].X
+	}
+	return (pts[len(pts)/2-1].X + pts[len(pts)/2].X) / 2
+}
+
+//MedianY returns the median y value of the dataset.
+func MedianY(pts Points) float64 {
+	if len(pts)%2 != 0 {
+		return pts[len(pts)/2-1].Y
+	}
+	return (pts[len(pts)/2-1].Y + pts[len(pts)/2].Y) / 2
+}
+
+//IndexAtMedianX returns the index of the median x value of the dataset.
+func IndexAtMedianX(pts Points) int {
+	for i := range pts {
+		if pts[i].X == MedianX(pts) {
+			return i
+		}
+	}
+	return 0
+}
+
+//IndexAtMedianY returns the index of the median y value of the dataset.
+func IndexAtMedianY(pts Points) int {
+	for i := range pts {
+		if pts[i].X == MedianY(pts) {
+			return i
+		}
+	}
+	return 0
 }
 
 //StddevX returns the standard devation of X coordinates

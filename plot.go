@@ -15,7 +15,8 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 )
 
-func plotMany(file string) error {
+//PlotsineAndCosine plots all four derivates.
+func PlotsineAndCosine(file string) error {
 	p, err := plot.New()
 	if err != nil {
 		return fmt.Errorf("could not create plot :%v", err)
@@ -124,8 +125,8 @@ func PlotGaussian(mean, stddev float64, iterations int) error {
 	iter := (s - (mean - stddev)) / float64(iterations)
 	for i := (mean - stddev) - mean; i < s+mean; i += iter {
 		p := Point{
-			x: i,
-			y: Gaussian(i, mean, stddev),
+			X: i,
+			Y: Gaussian(i, mean, stddev),
 		}
 		pts = append(pts, p)
 	}
@@ -155,8 +156,8 @@ func PlotMatrix(m matrix.Matrix, file string) error {
 		}
 		if v.GetLength() == 1 {
 			p := Point{
-				x: v.Slice()[0],
-				y: v.Slice()[1],
+				X: v.Slice()[0],
+				Y: v.Slice()[1],
 			}
 			pts = append(pts, p)
 		}
@@ -347,7 +348,7 @@ func PlotTangents(f func(x float64) float64, startingPoint, endPoint float64, it
 	for i := startingPoint; i < endPoint; i += iter {
 		grad := GradientAt(f, i)
 		po := Point{
-			x: i, y: f(i),
+			X: i, Y: f(i),
 		}
 		pts = append(pts, po)
 		l, err := plotter.NewLine(plotter.XYs{
@@ -393,7 +394,7 @@ func GradientLines(f func(x float64) float64, startPoint, endPoint float64, iter
 	iter := (endPoint - startPoint) / float64(iterations)
 	for i := startPoint; i < endPoint; i += iter {
 		po := Point{
-			x: i, y: f(i),
+			X: i, Y: f(i),
 		}
 		pts = append(pts, po)
 		xys := PointToXYs(pts)
@@ -479,8 +480,8 @@ func DrawStddev(pl *plot.Plot, pts Points) error {
 //DrawLine draws a line between p1 and p2.
 func DrawLine(p1, p2 Point) (*plotter.Line, error) {
 	l, err := plotter.NewLine(plotter.XYs{
-		{p1.x, p1.y},
-		{p2.x, p2.y},
+		{p1.X, p1.Y},
+		{p2.X, p2.Y},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("could not draw line :%v", err)
