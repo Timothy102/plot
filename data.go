@@ -34,6 +34,22 @@ func NewPoint(x, y float64) Point {
 	return Point{x: x, y: y}
 }
 
+//X returns the x coordinate of the point
+func X(p Point) float64 {
+	return p.x
+}
+
+//Y returns the y coordinate of the point
+func Y(p Point) float64 {
+	return p.y
+}
+
+//RandomPoint returns a random point
+func RandomPoint() Point {
+	rand.Seed(time.Now().UnixNano())
+	return Point{x: rand.Float64(), y: rand.Float64()}
+}
+
 //RoundPointstoDecimals rounds all Points to decimals accuracy.
 func RoundPointstoDecimals(pts Points, decimals int) Points {
 	for _, p := range pts {
