@@ -789,32 +789,6 @@ func Factorial(n int) int {
 	return 1
 }
 
-//ApproximateLine approxiamates the line via gradient descent
-func ApproximateLine(pts Points, learningRate float64, iterations int) (k, n float64) {
-	for i := 0; i < iterations; i++ {
-		cost, dm, dc := PointGradient(pts, k, n)
-		k += -dm * learningRate
-		n += -dc * learningRate
-		if (10 * i % iterations) == 0 {
-			fmt.Printf("cost(%.2f,%.2f) =%.2f\n", k, n, cost)
-		}
-	}
-	return k, n
-}
-
-//PointGradient returns the vector gradients of Points
-func PointGradient(pts Points, k, n float64) (cost, dm, dc float64) {
-	ps := DiscludeNan(pts)
-	for i := range ps {
-		dist := ps[i].Y - (ps[i].X*k + n)
-		cost += dist * dist
-		dm += -ps[i].X * dist
-		dc += -dist
-	}
-	l := float64(len(ps))
-	return cost / l, 2 / l * dm, 2 / n * dc
-}
-
 //ErrorBetweenPoints returns the average error between est and real.
 func ErrorBetweenPoints(est, real Points) float64 {
 	var absError float64
@@ -978,9 +952,9 @@ func ApplyProductRule(f func(x float64) float64, base, power float64) func(float
 	return f2
 }
 
-//Gradient returns the gradients from startPoint to endPoint
+//Gradients returns the gradients from startPoint to endPoint
 //See GradientAt for gradient at a specific Point.
-func Gradient(f func(x float64) float64, startPoint, endPoint float64) []float64 {
+func Gradients(f func(x float64) float64, startPoint, endPoint float64) []float64 {
 	var grads []float64
 	step := 0.01
 	for i := startPoint; i < endPoint; i += step {
@@ -1006,19 +980,41 @@ func radiansToDegrees(x float64) float64 {
 	return x * 180 / math.Pi
 }
 
-//ComputeCost computes the average mean squared error given k and n as the linear regression coefficient and intercept.
-func ComputeCost(pts Points, k, n float64) float64 {
+//LinearRegression returns the optimal line via gradient descent and returns the coefficient and the intercept.
+func LinearRegression(pts Points, lr float64, iterations int) (k, c float64) {
+	for i := 0; i < iterations; i++ {
+		dk, dc := PartialsForLinReg(pts, k, c)
+		k += -dk * lr
+		dc += -dc * lr
+	}
+	return k, c
+}
+
+//Cost returns the cost function.
+func Cost(pts Points, k, n float64) float64 {
 	var loss float64
-	for i := range pts {
-		dist := pts[i].Y - pts[i].X*k + n
+	for _, p := range pts {
+		dist := p.Y - p.X*k + n
 		loss += dist * dist
 	}
 	return loss
 }
 
+//PartialsForLinReg returns the
+func PartialsForLinReg(pts Points, k, c float64) (dk, dc float64) {
+	for _, p := range pts {
+		d := p.Y - (p.X*k + c)
+		dk += -p.X * d
+		dc += -d
+	}
+	n := float64(len(pts))
+	return 2 / n * dk, 2 / n * dc
+
+}
+
 //DoApproximation uses the ApproximateLine outputs to plot the approximation line.
 func DoApproximation(pts Points, learningRate float64, iterations int, file string) error {
-	x, c := ApproximateLine(pts, learningRate, iterations)
+	x, c := LinearRegression(pts, learningRate, iterations)
 	if err := DrawApproximation(pts, x, c, file); err != nil {
 		return fmt.Errorf("Drawing approximation failed. :%v", err)
 	}
