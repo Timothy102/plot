@@ -1006,9 +1006,19 @@ func radiansToDegrees(x float64) float64 {
 	return x * 180 / math.Pi
 }
 
+//ComputeCost computes the average mean squared error given k and n as the linear regression coefficient and intercept.
+func ComputeCost(pts Points, k, n float64) float64 {
+	var loss float64
+	for i := range pts {
+		dist := pts[i].Y - pts[i].X*k + n
+		loss += dist * dist
+	}
+	return loss
+}
+
 //DoApproximation uses the ApproximateLine outputs to plot the approximation line.
-func DoApproximation(pts Points, file string) error {
-	x, c := ApproximateLine(pts, 0.01, 10000)
+func DoApproximation(pts Points, learningRate float64, iterations int, file string) error {
+	x, c := ApproximateLine(pts, learningRate, iterations)
 	if err := DrawApproximation(pts, x, c, file); err != nil {
 		return fmt.Errorf("Drawing approximation failed. :%v", err)
 	}
