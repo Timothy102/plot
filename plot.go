@@ -379,53 +379,6 @@ func PlotTangents(f func(x float64) float64, startingPoint, endPoint float64, it
 	return nil
 }
 
-//GradientLines plots the function f along with gradient tangents.
-func GradientLines(f func(x float64) float64, startPoint, endPoint float64, iterations int, file string) error {
-	fi, err := os.Create(file)
-	if err != nil {
-		return fmt.Errorf("could not create file %s:%v", file, err)
-	}
-	var pts Points
-	defer fi.Close()
-	p, err := plot.New()
-	if err != nil {
-		return fmt.Errorf("could not create plot :%v", err)
-	}
-	iter := (endPoint - startPoint) / float64(iterations)
-	for i := startPoint; i < endPoint; i += iter {
-		po := Point{
-			X: i, Y: f(i),
-		}
-		pts = append(pts, po)
-		xys := PointToXYs(pts)
-		sc, err := plotter.NewScatter(xys)
-		if err != nil {
-			return fmt.Errorf("Could not create scatter :%v", err)
-		}
-		grad := GradientAt(f, i)
-		l, err := plotter.NewLine(plotter.XYs{
-			{i, f(i)},
-			{i + iter, grad*(i+iter) + f(i)},
-		})
-		sc.GlyphStyle.Shape = draw.CrossGlyph{}
-		sc.Color = color.RGBA{B: 255, A: 255}
-
-		if err != nil {
-			return fmt.Errorf("Could not create line :%v", err)
-		}
-		p.Add(sc, l)
-	}
-	wt, err := p.WriterTo(360, 360, "png")
-	if err != nil {
-		return fmt.Errorf("could not create writer :%v", err)
-	}
-	_, err = wt.WriteTo(fi)
-	if err != nil {
-		return fmt.Errorf("could not write to %s :%v", file, err)
-	}
-	return nil
-}
-
 //PlotSinusApproximation plots the sinus approximation onto file
 func PlotSinusApproximation(iterations, polynomial int, file string) error {
 	if !strings.HasSuffix(file, ".png") {
@@ -590,6 +543,11 @@ func SinusEstimate(x float64, polynomial int) float64 {
 	return -approx
 }
 
+//TanEstimate returns the Taylor series approximation with polynomial accuracy.
+func TanEstimate(x float64, polynomial int) float64 {
+	return SinusEstimate(x, polynomial) / CosineEstimate(x, polynomial)
+}
+
 //EulerNumberEstimate returns the Taylor series exponential approximate of X.
 func EulerNumberEstimate(x float64, polynomial int) float64 {
 	approx := 0.0
@@ -599,11 +557,6 @@ func EulerNumberEstimate(x float64, polynomial int) float64 {
 		approx += comp / float64(fact)
 	}
 	return approx
-}
-
-//TanEstimate returns the Taylor series approximation with polynomial accuracy.
-func TanEstimate(x float64, polynomial int) float64 {
-	return SinusEstimate(x, polynomial) / CosineEstimate(x, polynomial)
 }
 
 //HighestAccuracyPolynomial plots the best polynomial approximation of f regarding fa->which should be the actual function. Function returns Points and the polynomial accuracy index.
@@ -620,4 +573,47 @@ func HighestAccuracyPolynomial(f func(x float64, polynomial int) float64, fa fun
 	ps := DefineDatasetWithPolynomial(f, stPoint, endPoint, iterations, x)
 
 	return ps, x
+}
+
+//GradientLines plots the tangents based on the gradients of the function f, given the starting and end point and the step
+func GradientLines(f func(float64) float64, stPoint, endPoint float64, step float64, file string) error {
+	p, err := plot.New()
+	if err != nil {
+		return fmt.Errorf("could not create plot :%v", err)
+	}
+	fi, err := os.Create(file)
+	if err != nil {
+		return fmt.Errorf("could not create file %s :%v", file, err)
+	}
+	defer fi.Close()
+	iterations := int((endPoint - stPoint) / step)
+	points := DefineDataset(f, stPoint, endPoint, iterations)
+	xys := PointToXYs(points)
+	sc, err := plotter.NewScatter(xys)
+	if err != nil {
+		return fmt.Errorf("could not create scatter :%v", err)
+	}
+	sc.GlyphStyle.Shape = draw.CrossGlyph{}
+	sc.Color = color.RGBA{B: 255, A: 255}
+	p.Add(sc)
+	for i := stPoint; i < endPoint; i += step {
+		grad := (f(i+step) - f(i)) / step
+		n := (endPoint - stPoint) / 4
+		l, err := plotter.NewLine(plotter.XYs{
+			{i - n, f(i) - grad*n}, {i + step + n, f(i+step) + grad*n},
+		})
+		if err != nil {
+			return fmt.Errorf("could not create line :%v", err)
+		}
+		p.Add(l)
+	}
+	wt, err := p.WriterTo(400, 400, "png")
+	if err != nil {
+		return fmt.Errorf("could not create writer :%v", err)
+	}
+	_, err = wt.WriteTo(fi)
+	if err != nil {
+		return fmt.Errorf("could not write to writer :%v", err)
+	}
+	return nil
 }
