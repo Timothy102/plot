@@ -240,6 +240,16 @@ func IndexAtClosestToValue(pts Points, value float64) int {
 	return GetIndex(pts, p)
 }
 
+//DistanceFromOrigin returns the euclidean distance from origin.
+func DistanceFromOrigin(p Point) float64 {
+	return Euclidean(p, Point{X: 0, Y: 0})
+}
+
+//TriangleArea returns the area of a triangle via the determinant.
+func TriangleArea(p1, p2, p3 Point) float64 {
+	return 1 / 2 * (p2.X*p3.Y - (p1.X*p3.Y - p3.X*p1.Y) + (p1.X*p2.Y - p2.X*p1.Y))
+}
+
 //Euclidean returns the Euclidean distance between two Points.
 func Euclidean(p1, p2 Point) float64 {
 	s := math.Pow((p1.X - p2.X), 2)
