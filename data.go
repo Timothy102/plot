@@ -34,12 +34,11 @@ func NewPoint(x, y float64) Point {
 	return Point{X: x, Y: y}
 }
 
-
-//PointsFromArrays returns points from arrays of x and y coordiantes. 
-func PointsFromArrays(xs,ys []float64)Points{
-	pts:=make(Points,len(xs))
-	for i:=range pts{
-		pts=append(pts, Point{x:xs[i],y:ys[i]})
+//PointsFromArrays returns points from arrays of x and y coordiantes.
+func PointsFromArrays(xs, ys []float64) Points {
+	pts := make(Points, len(xs))
+	for i := range pts {
+		pts = append(pts, Point{X: xs[i], Y: ys[i]})
 	}
 	return pts
 }
@@ -981,7 +980,7 @@ func GradientAt(f func(x float64) float64, x float64) float64 {
 	step := 0.01
 	grad := (f(x+step) - f(x)) / ((x + step) - x)
 	return grad
-
+}
 
 //DegreesToRadians
 func DegreesToRadians(x float64) float64 {
