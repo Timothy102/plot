@@ -274,6 +274,19 @@ func FlipOverYAxis(pts Points) Points {
 	return pts
 }
 
+//Slope returns the coeffcient for linear regression
+func Slope(p1, p2 Point) float64 {
+	rise := p2.Y - p1.Y
+	run := p2.X - p1.X
+	return rise / run
+}
+
+//Intercept returns the intercept or the value of the linear function at point 0.
+func Intercept(p1, p2 Point) float64 {
+	slope := Slope(p1, p1)
+	return p1.Y - slope*p1.X
+}
+
 //SortPointsByX bubble sorts Points, so the Point with the highest X value is the last element of the array.
 func SortPointsByX(pts Points) Points {
 	for i := len(pts); i > 0; i-- {
