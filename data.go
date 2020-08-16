@@ -973,10 +973,13 @@ func GradientAt(f func(x float64) float64, x float64) float64 {
 	return grad
 }
 
-func degreesToRadians(x float64) float64 {
+//DegreesToRadians
+func DegreesToRadians(x float64) float64 {
 	return x * math.Pi / 180
 }
-func radiansToDegrees(x float64) float64 {
+
+//RadiansToDegrees
+func RadiansToDegrees(x float64) float64 {
 	return x * 180 / math.Pi
 }
 
