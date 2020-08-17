@@ -363,6 +363,20 @@ func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoi
 	return pts
 }
 
+//DefineExponentialDataset defines an exponential function for the given parameters.
+func DefineExponentialDataset(n float64, stPoint, endPoint float64, iterations int) Points {
+	var pts Points
+	iter := (endPoint - stPoint) / float64(iterations)
+	for i := stPoint; i <= endPoint; i += iter {
+		p := Point{
+			X: i,
+			Y: math.Pow(i, n),
+		}
+		pts = append(pts, p)
+	}
+	return pts
+}
+
 //DefineRandomPoints returns 'number' of Points between min and max
 func DefineRandomPoints(number int, min, max float64) Points {
 	var pts Points
