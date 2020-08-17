@@ -335,8 +335,8 @@ func DefineDataset(f func(x float64) float64, stPoint, endPoint float64, iterati
 	return pts
 }
 
-//DefineDatasetWithPolynomial returns an array of Points given the inputs. The function will iterate from stPoint to endPoint with iterations.
-func DefineDatasetWithPolynomial(f func(x float64, polynomial int) float64, stPoint, endPoint float64, iterations, polynomial int) Points {
+//DefineDatasetPolynomial returns an array of Points given the inputs. The function will iterate from stPoint to endPoint with iterations.
+func DefineDatasetPolynomial(f func(x float64, polynomial int) float64, stPoint, endPoint float64, iterations, polynomial int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
