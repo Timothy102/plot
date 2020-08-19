@@ -15,6 +15,8 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 )
 
+var e = EulerNumberEstimate(1, 15)
+
 //PlotsineAndCosine plots all four derivates.
 func PlotsineAndCosine(file string) error {
 	p, err := plot.New()
@@ -394,7 +396,7 @@ func PlotSinusApproximation(iterations, polynomial int, file string) error {
 		return fmt.Errorf("could not create plot :%v", err)
 	}
 	for i := 1; i < polynomial; i++ {
-		pts := DefineDatasetWithPolynomial(SinusEstimate, -1.0, 1.0, iterations, i)
+		pts := DefineDatasetPolynomial(SinusEstimate, -1.0, 1.0, iterations, i)
 		pts = DiscludeNan(pts)
 		xys := PointToXYs(pts)
 
@@ -564,13 +566,13 @@ func HighestAccuracyPolynomial(f func(x float64, polynomial int) float64, fa fun
 	var ss []float64
 	var pts Points
 	for i := 1; i < uptopolynomial; i++ {
-		pts = DefineDatasetWithPolynomial(f, stPoint, endPoint, iterations, i)
+		pts = DefineDatasetPolynomial(f, stPoint, endPoint, iterations, i)
 		s := EstimationError(fa, pts)
 		fmt.Println(s)
 		ss = append(ss, s)
 	}
 	x := indexClosest(ss) + 1
-	ps := DefineDatasetWithPolynomial(f, stPoint, endPoint, iterations, x)
+	ps := DefineDatasetPolynomial(f, stPoint, endPoint, iterations, x)
 
 	return ps, x
 }
