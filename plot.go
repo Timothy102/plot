@@ -550,8 +550,8 @@ func TanEstimate(x float64, polynomial int) float64 {
 	return SinusEstimate(x, polynomial) / CosineEstimate(x, polynomial)
 }
 
-//EulerNumberEstimate returns the Taylor series exponential approximate of X.
-func EulerNumberEstimate(x float64, polynomial int) float64 {
+//ExponentialEstimate returns the Taylor series exponential approximate of X. E to the x.
+func ExponentialEstimate(x float64, polynomial int) float64 {
 	approx := 0.0
 	for i := 0; i < polynomial; i++ {
 		comp := math.Pow(x, float64(i))
