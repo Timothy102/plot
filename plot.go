@@ -15,7 +15,7 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 )
 
-var e = EulerNumberEstimate(1, 15)
+var e = ExponentialEstimate(1, 15)
 
 //PlotsineAndCosine plots all four derivates.
 func PlotsineAndCosine(file string) error {
