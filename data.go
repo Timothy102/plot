@@ -14,9 +14,16 @@ import (
 )
 
 //Point struct
+//Use the boolean is and categories only if needed.
 type Point struct {
 	X, Y float64
-	is   bool
+	Is   bool
+	Cat  Category
+}
+
+//Category used with KNN algorithm
+type Category struct {
+	name string
 }
 
 //Points is a slice of Points.
@@ -29,12 +36,12 @@ func PrintPoints(pts Points) {
 	}
 }
 
-//NewPoint returns a new point object.
+//NewPoint returns a new Point object.
 func NewPoint(x, y float64) Point {
 	return Point{X: x, Y: y}
 }
 
-//PointsFromArrays returns points from arrays of x and y coordiantes.
+//PointsFromArrays returns Points from arrays of x and y coordiantes.
 func PointsFromArrays(xs, ys []float64) Points {
 	pts := make(Points, len(xs))
 	for i := range pts {
@@ -61,7 +68,7 @@ func Ys(pts Points) []float64 {
 	return arr
 }
 
-//RandomPoint returns a random point
+//RandomPoint returns a random Point
 func RandomPoint() Point {
 	rand.Seed(time.Now().UnixNano())
 	return Point{X: rand.Float64(), Y: rand.Float64()}
@@ -76,7 +83,7 @@ func RoundPointstoDecimals(pts Points, decimals int) Points {
 	return pts
 }
 
-//Randomize randomizes points to random values.
+//Randomize randomizes Points to random values.
 func Randomize(pts Points) Points {
 	fls := randFloats(-5.0, 5.0, 2*len(pts))
 	for i := range pts {
@@ -86,7 +93,7 @@ func Randomize(pts Points) Points {
 	return pts
 }
 
-//Normalize normalizes points so that they are centered and the standard deviation is 1.
+//Normalize normalizes Points so that they are centered and the standard deviation is 1.
 func Normalize(pts Points) Points {
 	for i := range pts {
 		pts[i].X = (pts[i].X - AverageX(pts)) / StddevX(pts)
@@ -291,7 +298,7 @@ func Slope(p1, p2 Point) float64 {
 	return rise / run
 }
 
-//Intercept returns the intercept or the value of the linear function at point 0.
+//Intercept returns the intercept or the value of the linear function at Point 0.
 func Intercept(p1, p2 Point) float64 {
 	slope := Slope(p1, p1)
 	return p1.Y - slope*p1.X
@@ -1070,25 +1077,7 @@ func DoApproximation(pts Points, learningRate float64, iterations int, file stri
 	return nil
 }
 
-//knn is the K-Nearest-Neighbour classification algorithm.
-//You can vary the parameter k for k nearest neighbours to be selected as an estimation.
-//This is binary algorithm set by points' is attribute.
-func Knn(k int, p Point, pts []Point) bool {
-	var kValue float64
-	ps := TopKEuclideans(p, pts, k)
-	for _, pt := range ps {
-		var v float64
-		if !pt.is {
-			v = -1
-		}
-		kValue += Euclidean(p, pt) * v
-	}
-	if kValue > 0 {
-		return true
-	}
-	return false
-}
-
+//TopKEuclideans returns the closest k points to the point p.
 //Which Points have the shortest Euclidean distance to the Point p.
 //It is used with KNN Algorithm.
 func TopKEuclideans(p Point, pts []Point, k int) []Point {
@@ -1108,6 +1097,58 @@ func TopKEuclideans(p Point, pts []Point, k int) []Point {
 		}
 	}
 	return ps
+}
+
+func knnclosest(k int, p Point, pts []Point) string {
+	return Knn(k, p, pts).name
+}
+
+//knn is the K-Nearest-Neighbour classifiCation algorithm.
+//You can vary the parameter k for k nearest neighbours to be selected as an estimation.
+//Knn is implemented with the help of the struct Category.
+func Knn(k int, p Point, pts []Point) Category {
+	var sum float64
+	var fls []float64
+	ps := TopKEuclideans(p, pts, k)
+	for i := range ps {
+		for j := range ps {
+			if ps[i].Cat == ps[j].Cat {
+				sum += Euclidean(ps[i], ps[j])
+			}
+			fls = append(fls, sum)
+		}
+	}
+	index := maxIndex(fls)
+	return distinctcategories(pts)[index]
+}
+
+func maxIndex(fls []float64) int {
+	for i := range fls {
+		if fls[i] == max(fls) {
+			return i
+		}
+	}
+	return 0
+}
+func distinctcategories(pts []Point) []Category {
+	var categories []Category
+	for i := range pts {
+		categories = append(categories, pts[i].Cat)
+	}
+	return categories[:countOfcategories(pts)]
+}
+
+func countOfcategories(pts []Point) int {
+	var count int
+	categories := distinctcategories(pts)
+	for i := range categories {
+		for j := range categories {
+			if categories[i].name != categories[j].name {
+				count++
+			}
+		}
+	}
+	return len(categories) - count
 }
 
 func sort(fs []float64) []float64 {
@@ -1180,6 +1221,7 @@ func Covariance(pts Points) float64 {
 
 //MedianX returns the median x value of the dataset.
 func MedianX(pts Points) float64 {
+	pts = SortPointsByX(pts)
 	if len(pts)%2 != 0 {
 		return pts[len(pts)/2-1].X
 	}
@@ -1188,6 +1230,7 @@ func MedianX(pts Points) float64 {
 
 //MedianY returns the median y value of the dataset.
 func MedianY(pts Points) float64 {
+	pts = SortPointsByY(pts)
 	if len(pts)%2 != 0 {
 		return pts[len(pts)/2-1].Y
 	}
@@ -1276,14 +1319,14 @@ func DisplayAllStats(pts Points) {
 func JaccardIndex(p1, p2 Points) int {
 	var sum int
 	for i := range p1 {
-		if (p1[i].is && p2[i].is) || (!p1[i].is && !p2[i].is) {
+		if (p1[i].Is && p2[i].Is) || (!p1[i].Is && !p2[i].Is) {
 			sum++
 		}
 	}
 	return sum / len(p1)
 }
 
-//Evaluation Metrics based on the bool of points, p1 should be the predicted value and p2 the actual values.
+//Evaluation Metrics based on the bool of Points, p1 should be the predicted value and p2 the actual values.
 func F1Score(p1, p2 Points) int {
 	return 2 * (Precision(p1, p2) * Recall(p1, p2)) / (Precision(p1, p2) + Recall(p1, p2))
 }
@@ -1320,7 +1363,7 @@ func Recall(p1, p2 Points) int {
 func TruePositivies(p1, p2 Points) int {
 	var sum int
 	for i := range p1 {
-		if p1[i].is && p2[i].is {
+		if p1[i].Is && p2[i].Is {
 			sum++
 		}
 	}
@@ -1331,7 +1374,7 @@ func TruePositivies(p1, p2 Points) int {
 func TrueNegatives(p1, p2 Points) int {
 	var sum int
 	for i := range p1 {
-		if !p1[i].is && !p2[i].is {
+		if !p1[i].Is && !p2[i].Is {
 			sum++
 		}
 	}
@@ -1342,7 +1385,7 @@ func TrueNegatives(p1, p2 Points) int {
 func FalsePositives(p1, p2 Points) int {
 	var sum int
 	for i := range p1 {
-		if !p1[i].is && p2[i].is {
+		if !p1[i].Is && p2[i].Is {
 			sum++
 		}
 	}
@@ -1353,7 +1396,7 @@ func FalsePositives(p1, p2 Points) int {
 func FalseNegatives(p1, p2 Points) int {
 	var sum int
 	for i := range p1 {
-		if p1[i].is && !p2[i].is {
+		if p1[i].Is && !p2[i].Is {
 			sum++
 		}
 	}
