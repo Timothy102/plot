@@ -3,6 +3,7 @@ package plot
 import (
 	"bufio"
 	"fmt"
+	"image/color"
 	"log"
 	"math"
 	"math/rand"
@@ -24,6 +25,7 @@ type Point struct {
 //Category used with KNN algorithm
 type Category struct {
 	name string
+	c    color.RGBA
 }
 
 //Points is a slice of Points.
