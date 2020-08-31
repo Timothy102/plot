@@ -95,11 +95,20 @@ func Randomize(pts Points) Points {
 	return pts
 }
 
-//Normalize normalizes Points so that they are centered and the standard deviation is 1.
-func Normalize(pts Points) Points {
+//Standardize standardizes Points so that they are centered and the standard deviation is 1.
+func Standardize(pts Points) Points {
 	for i := range pts {
 		pts[i].X = (pts[i].X - AverageX(pts)) / StddevX(pts)
 		pts[i].Y = (pts[i].Y - AverageY(pts)) / StddevY(pts)
+	}
+	return pts
+}
+
+//Normalize normalizes data so that it is between the interval of 0 and 1
+func Normalize(pts Points) Points {
+	for i := range pts {
+		pts[i].X = (pts[i].X - FindMinX(pts)) / (FindMaxX(pts) - FindMinX(pts))
+		pts[i].Y = (pts[i].Y - FindMinY(pts)) / (FindMaxY(pts) - FindMinY(pts))
 	}
 	return pts
 }
