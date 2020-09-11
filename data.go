@@ -959,6 +959,30 @@ func Rmse(f func(x float64) float64, pts Points) float64 {
 
 }
 
+//RidgeRegression returns the RidgeRegression or the l2 regularization to the loss function.
+func RidgeRegression(actual, pred []float64, lambda float64) float64 {
+	var loss float64
+	var l2 float64
+	for i := range actual {
+
+		loss += math.Pow(pred[i]-actual[i], 2)
+		l2 += lambda * math.Pow(actual[i], 2)
+	}
+	return loss + l2
+}
+
+//LassoRegression returns the LassoRegression or the l1 regularization to the loss function.
+func LassoRegression(actual, pred []float64, lambda float64) float64 {
+	var loss float64
+	var l1 float64
+	for i := range actual {
+
+		loss += math.Pow(pred[i]-actual[i], 2)
+		l1 += lambda * math.Abs(actual[i])
+	}
+	return loss + l1
+}
+
 //CrossEntropy returns the cross entropy loss
 func CrossEntropy(f func(x float64) float64, pts Points) float64 {
 	var loss float64
