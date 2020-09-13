@@ -381,6 +381,20 @@ func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoi
 	return pts
 }
 
+//DefineNormalDistribution defines the normal distribution via n which is the number of points, min and max, and the mean and the standard deviaton.
+func DefineNormalDistribution(n int, min, max, mean, stddev float64) Points {
+	var pts Points
+	iter := 2 * stddev / float64(n)
+	for i := (mean - stddev) - mean; i < 2*stddev+mean; i += iter {
+		p := Point{
+			X: i,
+			Y: Gaussian(i, mean, stddev),
+		}
+		pts = append(pts, p)
+	}
+	return pts
+}
+
 //DefineExponentialDataset defines an exponential function for the given parameters.
 func DefineExponentialDataset(n float64, stPoint, endPoint float64, iterations int) Points {
 	var pts Points
