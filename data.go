@@ -368,13 +368,13 @@ func DefineDatasetPolynomial(f func(x float64, polynomial int) float64, stPoint,
 }
 
 //DefineDatasetToPower  is designed to plot Points to the power datasets.
-func DefineDatasetToPower(f func(x float64, n float64) float64, n float64, stPoint, endPoint float64, iterations int) Points {
+func DefineDatasetToPower(n float64, stPoint, endPoint float64, iterations int) Points {
 	var pts Points
 	iter := (endPoint - stPoint) / float64(iterations)
 	for i := stPoint; i <= endPoint; i += iter {
 		p := Point{
 			X: i,
-			Y: f(i, n),
+			Y: math.Pow(i, n),
 		}
 		pts = append(pts, p)
 	}
@@ -389,20 +389,6 @@ func DefineNormalDistribution(n int, min, max, mean, stddev float64) Points {
 		p := Point{
 			X: i,
 			Y: Gaussian(i, mean, stddev),
-		}
-		pts = append(pts, p)
-	}
-	return pts
-}
-
-//DefineExponentialDataset defines an exponential function for the given parameters.
-func DefineExponentialDataset(n float64, stPoint, endPoint float64, iterations int) Points {
-	var pts Points
-	iter := (endPoint - stPoint) / float64(iterations)
-	for i := stPoint; i <= endPoint; i += iter {
-		p := Point{
-			X: i,
-			Y: math.Pow(i, n),
 		}
 		pts = append(pts, p)
 	}
@@ -1124,6 +1110,16 @@ func DoApproximation(pts Points, learningRate float64, iterations int, file stri
 		return fmt.Errorf("Drawing approximation failed. :%v", err)
 	}
 	return nil
+}
+
+//DefineLinearDataset returns points given k=slope and n=the intercept from min to max with iterations.
+func DefineLinearDataset(k, n, min, max float64, iterations int) Points {
+	var pts Points
+	iter := (max - min) / float64(iterations)
+	for i := min; i < max; i += iter {
+		pts = append(pts, NewPoint(i, k*i+n))
+	}
+	return pts
 }
 
 //TopKEuclideans returns the closest k points to the point p.
