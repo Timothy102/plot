@@ -8,6 +8,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/timothy102/matrix"
@@ -1061,12 +1062,12 @@ func GradientAt(f func(x float64) float64, x float64) float64 {
 	return grad
 }
 
-//DegreesToRadians
+//DegreesToRadians converts degrees to radians
 func DegreesToRadians(x float64) float64 {
 	return x * math.Pi / 180
 }
 
-//RadiansToDegrees
+//RadiansToDegrees converts radians to degrees
 func RadiansToDegrees(x float64) float64 {
 	return x * 180 / math.Pi
 }
@@ -1148,7 +1149,7 @@ func knnclosest(k int, p Point, pts []Point) string {
 	return Knn(k, p, pts).name
 }
 
-//knn is the K-Nearest-Neighbour classifiCation algorithm.
+//Knn is the K-Nearest-Neighbour classifiCation algorithm.
 //You can vary the parameter k for k nearest neighbours to be selected as an estimation.
 //Knn is implemented with the help of the struct Category.
 func Knn(k int, p Point, pts []Point) Category {
@@ -1371,7 +1372,7 @@ func JaccardIndex(p1, p2 Points) int {
 	return sum / len(p1)
 }
 
-//Evaluation Metrics based on the bool of Points, p1 should be the predicted value and p2 the actual values.
+//F1Score based on the bool of Points, p1 should be the predicted value and p2 the actual values.
 func F1Score(p1, p2 Points) int {
 	return 2 * (Precision(p1, p2) * Recall(p1, p2)) / (Precision(p1, p2) + Recall(p1, p2))
 }
@@ -1454,4 +1455,55 @@ func PrintMetrics(p1, p2 Points) {
 	fmt.Printf("F1 Score: %d\n", F1Score(p1, p2))
 	fmt.Printf("Precision: %d\n", Precision(p1, p2))
 	fmt.Printf("Recall: %d\n", Recall(p1, p2))
+}
+
+//Bisection method for finding null values of the polynom by disecting the interval given down and upper parameters in this case.
+func Bisection(f func(float64) float64, down, upper float64, iter int) float64 {
+	if SameSign(f, down, upper) {
+		log.Fatalf("You have entered an invalid interval. Values remain either positive or negative on that interval. ")
+	} else {
+		for {
+			mean := mean(down, upper)
+			if SameSign(f, mean, down) {
+				upper = mean
+			} else {
+				down = mean
+			}
+			if decimalPortion(mean) == iter {
+				return mean
+			}
+		}
+	}
+	return mean(down, upper)
+}
+
+//LargestCommonDivider returns the largest common divider between a and b
+func LargestCommonDivider(a, b int) int {
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a
+}
+
+//AreDistant returns true if the largest common divider between a and b is 1, meaning they have no common dividers.
+func AreDistant(a, b int) bool {
+	return LargestCommonDivider(a, b) == 1
+}
+
+func mean(a, b float64) float64 {
+	return (a + b) / 2
+}
+
+//SameSign returns true if for f(a) and f(b) the values are on the side of the x axis. Either both positive or both negative.
+func SameSign(f func(float64) float64, a, b float64) bool {
+	return f(a)*f(b) > 0
+}
+
+func decimalPortion(n float64) int {
+	decimalPlaces := fmt.Sprintf("%f", n-math.Floor(n))
+	decimalPlaces = strings.Replace(decimalPlaces, "0.", "", -1)
+	decimalPlaces = strings.TrimRight(decimalPlaces, "0")
+	return len(decimalPlaces)
 }
