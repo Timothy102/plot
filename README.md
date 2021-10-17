@@ -94,3 +94,14 @@ PlotGaussian(4.2,1.2,1000)
 
 ![alt text](images/Gaussian.png)
 
+## Contact
+Please, feel free to reach out on LinkedIn, gmail.
+For more, check my medium article. 
+
+`https://towardsdatascience.com/golang-as-the-new-machine-learning-powerforce-e1b74b10b83b`
+
+`https://www.linkedin.com/in/tim-cvetko-32842a1a6/ `
+
+## License
+
+Licensed under the MIT [LICENSE](LICENSE)
